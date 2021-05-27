@@ -35,5 +35,20 @@ public class Administracion {
 		
 	}
 	
+	public void generarTurnos() {
+		
+	}
+	
+	public boolean verificaTurno() {
+		return false;
+	}
+	
+	public void vacunado() {
+		
+	}
+	
+	private void dejarEnHistorial() {
+		
+	}
 	
 }

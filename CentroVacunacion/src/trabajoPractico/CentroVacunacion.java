@@ -18,10 +18,17 @@ public class CentroVacunacion {
 	* Si el nombre no está definido, se debe generar una excepción.
 	*/
 	public CentroVacunacion (String nombreCentro, int capacidadVacunacionDiaria) {
-		this.nombre = nombreCentro;
-		if (capacidadVacunacionDiaria < 0)
+		
+		if (capacidadVacunacionDiaria <= 0) {
 			throw new RuntimeException("La capacidad no puede ser negativa");
+		}
+		
+		this.nombre = nombreCentro;
 		this.capacidad = capacidadVacunacionDiaria;
+		this.fecha = Fecha.hoy();
+		this.administracion = new Administracion();
+		this.almacen = new Almacen();
+		
 	}	
 	
 	

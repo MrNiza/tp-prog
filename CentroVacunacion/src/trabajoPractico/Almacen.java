@@ -8,7 +8,7 @@ public class Almacen {
 	private static HashMap<String, Integer> vencidas;
 	private static HashSet<Vacuna> vacunas;
 	
-	private Almacen () { 
+	public Almacen () { 
 		HashMap<String, Integer> stock = new HashMap <String,Integer>();
 		HashMap<String, Integer> vencidas = new HashMap <String,Integer>();
 		HashSet<Vacuna> vacunas = new HashSet <Vacuna>();
