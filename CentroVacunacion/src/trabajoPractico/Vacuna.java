@@ -3,16 +3,14 @@ package trabajoPractico;
 public abstract class Vacuna {
 	private String nombre;
 	private Integer temperatura;
-	private Fecha vencimiento;
-	private Boolean vencida;
+	private Fecha fechaIngreso;
 	private Boolean asignadaEnEspera;
 	private Boolean utilizada;
 
-	public Vacuna (String nombre, Integer temperatura, Fecha vencimiento) {
+	public Vacuna (String nombre, Integer temperatura, Fecha fechaIngreso) {
 		this.nombre = nombre;
 		this.temperatura = temperatura;
-		this.vencimiento = vencimiento;
-		this.vencida= false;
+		this.fechaIngreso = fechaIngreso;
 		this.asignadaEnEspera= false;
 		this.utilizada = false;
 	}
@@ -25,22 +23,18 @@ public abstract class Vacuna {
 		return this.temperatura;
 	}
 	
+	
+	//Esto no va a lanzar los dias de vencimiento, solo retorna, 1, 0 o -1
 	public Integer DiasVencimiento() {
-		return vencimiento.compareTo(Fecha.hoy());
+		return fechaIngreso.compareTo(Fecha.hoy());
 		}
 	
-	public void setVencida() {
-		vencida= true;
-	}
 	
 	public void setAsignadaEnEspera() { 
 		asignadaEnEspera = true;
 	}
 	
 	public void setUtilizada() { 
-		if (vencida = true)  
-			throw new RuntimeException ("No se puede utilizar una vacuna vencida");
-		else 
 			utilizada = true; 
 	}
 

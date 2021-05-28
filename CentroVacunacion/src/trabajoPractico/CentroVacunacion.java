@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class CentroVacunacion {
 	private String nombre;
-	private Integer capacidad;
+	private static Integer capacidad;
 	private Fecha fecha;
 	private Administracion administracion;
 	private Almacen almacen;
@@ -31,6 +31,9 @@ public class CentroVacunacion {
 		
 	}	
 	
+	public static int getCapacidad() { 
+		return capacidad; 
+	}
 	
 	/**
 	* Solo se pueden ingresar los tipos de vacunas planteados en la 1ra parte.
@@ -43,7 +46,7 @@ public class CentroVacunacion {
 	public void ingresarVacunas(String nombreVacuna, int cantidad, Fecha fechaIngreso) {
 		if (cantidad < 0) 
 			throw new RuntimeException ("La cantidad no puede ser negativa");
-		if(almacen.verificarVacuna(nombreVacuna)==false)
+		if(Almacen.verificarVacuna(nombreVacuna)==false)
 			throw new RuntimeException("La vacuna ingresada no existe");
 		almacen.ingresarVacuna(nombreVacuna); 
 	}
@@ -75,10 +78,7 @@ public class CentroVacunacion {
 	* Si la persona ya fue vacunada, también debe generar una excepción.
 	*/
 	public void inscribirPersona(int dni, Fecha nacimiento, boolean tienePadecimientos, boolean esEmpleadoSalud) {
-//	esto podría ir dentro de persona
-		if (Fecha.diferenciaAnios(Fecha.hoy(), nacimiento) <= 18) 
-			throw new RuntimeException ("No se pueden inscribir menores de edad");
-	//	administracion.ingresarPersona;
+		Administracion.ingresarPersona(dni, nacimiento, tienePadecimientos, esEmpleadoSalud);
 	}
 	
 	/**
@@ -87,8 +87,7 @@ public class CentroVacunacion {
 	* Si no quedan inscriptos sin vacunas debe devolver una lista vacía.
 	*/
 	public List<Integer> listaDeEspera() {
-		return null; 
-	//	return administracion.listaDeEspera
+		return administracion.listaDeEspera();
 		}
 	
 	/**
@@ -107,7 +106,7 @@ public class CentroVacunacion {
 	*
 	*/
 	public void generarTurnos(Fecha fechaInicial) { 
-	//	administracion.generarTurnos;
+		administracion.generarTurnos(fechaInicial);
 	}
 	
 	/**
@@ -117,8 +116,7 @@ public class CentroVacunacion {
 	* La cantidad de turnos no puede exceder la capacidad por día de la ungs.
 	*/
 	public List<Integer> turnosConFecha(Fecha fecha){
-		return null;
-	//	return administracion.turnosConFecha(fecha);
+		return administracion.turnosConFecha(fecha);
 	}
 	
 	/**
@@ -129,7 +127,7 @@ public class CentroVacunacion {
 	* - Si no está inscripto o no tiene turno ese día, se genera una Excepcion.
 	*/
 	public void vacunarInscripto(int dni, Fecha fechaVacunacion) { 
-//		persona.vacunarInscripto(dni, fechaVacunacion);
+		Administracion.vacunarInscripto(dni, fechaVacunacion);
 	}
 	
 	/**
@@ -138,8 +136,7 @@ public class CentroVacunacion {
 	* - Y, el valor es el nombre de la vacuna aplicada.
 	*/
 	public Map<Integer, String> reporteVacunacion(){
-		return null;
-//		return administracion.reporteVacunacion();
+		return administracion.reporteVacunacion();
 	}
 	
 	/**

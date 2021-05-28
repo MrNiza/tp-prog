@@ -50,6 +50,7 @@ public class Almacen {
 		return false;
 	}
 	
+	//TODO
 	public void ingresarVacuna(String nombre) {
 		if (verificarVacuna(nombre) == true) {
 			if (nombre == "Sputnik")
