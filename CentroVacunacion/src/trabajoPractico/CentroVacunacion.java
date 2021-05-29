@@ -22,6 +22,9 @@ public class CentroVacunacion {
 		if (capacidadVacunacionDiaria <= 0) {
 			throw new RuntimeException("La capacidad no puede ser negativa");
 		}
+		if (nombreCentro == "") {
+			throw new RuntimeException("Se requiere un nombre");
+		}
 		
 		this.nombre = nombreCentro;
 		this.capacidad = capacidadVacunacionDiaria;
@@ -30,8 +33,7 @@ public class CentroVacunacion {
 		this.almacen = new Almacen();
 		
 	}	
-	
-	
+
 	/**
 	* Solo se pueden ingresar los tipos de vacunas planteados en la 1ra parte.
 	* Si el nombre de la vacuna no coincidiera con los especificados se debe generar
@@ -41,11 +43,17 @@ public class CentroVacunacion {
 	* sumar al stock existente, tomando en cuenta las vacunas ya utilizadas.
 	*/
 	public void ingresarVacunas(String nombreVacuna, int cantidad, Fecha fechaIngreso) {
-		if (cantidad < 0) 
+		if (cantidad <= 0) {
 			throw new RuntimeException ("La cantidad no puede ser negativa");
-		if(almacen.verificarVacuna(nombreVacuna)==false)
+		}
+		if (Almacen.verificarVacuna(nombreVacuna)) {
 			throw new RuntimeException("La vacuna ingresada no existe");
-		almacen.ingresarVacuna(nombreVacuna); 
+		}
+		else {
+			for(int i = 0; i<cantidad; i++) {
+				almacen.ingresarVacuna(nombreVacuna, fechaIngreso);
+			}
+		}
 	}
 	
 	/**
@@ -56,17 +64,16 @@ public class CentroVacunacion {
 		return Almacen.vacunasDisponibles();
 	}
 	
-	
 	/**
 	* total de vacunas disponibles no vencidas que coincida con el nombre de
 	* vacuna especificado.
 	*/
 	public int vacunasDisponibles(String nombreVacuna) {
-		if(Almacen.verificarVacuna(nombreVacuna)==false)
+		if(Almacen.verificarVacuna(nombreVacuna)) {
 			throw new RuntimeException("La vacuna ingresada no existe");
+		}
 		return Almacen.vacunasDisponibles(nombreVacuna);
 	}
-	
 	
 	/**
 	* Se inscribe una persona en lista de espera.
@@ -75,10 +82,7 @@ public class CentroVacunacion {
 	* Si la persona ya fue vacunada, también debe generar una excepción.
 	*/
 	public void inscribirPersona(int dni, Fecha nacimiento, boolean tienePadecimientos, boolean esEmpleadoSalud) {
-//	esto podría ir dentro de persona
-		if (Fecha.diferenciaAnios(Fecha.hoy(), nacimiento) <= 18) 
-			throw new RuntimeException ("No se pueden inscribir menores de edad");
-	//	administracion.ingresarPersona;
+		administracion.ingresarPersona(dni, nacimiento, tienePadecimientos, esEmpleadoSalud);
 	}
 	
 	/**
@@ -87,8 +91,7 @@ public class CentroVacunacion {
 	* Si no quedan inscriptos sin vacunas debe devolver una lista vacía.
 	*/
 	public List<Integer> listaDeEspera() {
-		return null; 
-	//	return administracion.listaDeEspera
+		return administracion.enEspera();
 		}
 	
 	/**
@@ -107,7 +110,7 @@ public class CentroVacunacion {
 	*
 	*/
 	public void generarTurnos(Fecha fechaInicial) { 
-	//	administracion.generarTurnos;
+		administracion.generarTurnos(fechaInicial);
 	}
 	
 	/**
@@ -117,8 +120,7 @@ public class CentroVacunacion {
 	* La cantidad de turnos no puede exceder la capacidad por día de la ungs.
 	*/
 	public List<Integer> turnosConFecha(Fecha fecha){
-		return null;
-	//	return administracion.turnosConFecha(fecha);
+		return administracion.turnosConFecha(fecha);
 	}
 	
 	/**
@@ -129,7 +131,7 @@ public class CentroVacunacion {
 	* - Si no está inscripto o no tiene turno ese día, se genera una Excepcion.
 	*/
 	public void vacunarInscripto(int dni, Fecha fechaVacunacion) { 
-//		persona.vacunarInscripto(dni, fechaVacunacion);
+		Administracion.vacunarInscripto(dni, fechaVacunacion);
 	}
 	
 	/**
@@ -138,8 +140,7 @@ public class CentroVacunacion {
 	* - Y, el valor es el nombre de la vacuna aplicada.
 	*/
 	public Map<Integer, String> reporteVacunacion(){
-		return null;
-//		return administracion.reporteVacunacion();
+		return administracion.reporteVacunacion();
 	}
 	
 	/**
@@ -150,5 +151,8 @@ public class CentroVacunacion {
 	public Map<String, Integer> reporteVacunasVencidas(){
 		return Almacen.reporteVacunasVencidas();
 	}
-
+	
+	public int getCapacidad() { 
+		return this.capacidad; 
+	}
 }

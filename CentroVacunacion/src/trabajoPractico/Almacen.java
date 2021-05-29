@@ -1,29 +1,28 @@
 package trabajoPractico;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Almacen {
-	private static HashMap<String, Integer> stock;
-	private static HashMap<String, Integer> vencidas;
-	private static HashSet<Vacuna> vacunas;
+	private Map<String, Integer> stock;
+	private Map<String, Integer> vencidas;
+	private Set<Vacuna> vacunas;
 	
 	public Almacen () { 
-		HashMap<String, Integer> stock = new HashMap <String,Integer>();
-		HashMap<String, Integer> vencidas = new HashMap <String,Integer>();
-		HashSet<Vacuna> vacunas = new HashSet <Vacuna>();
+		Map<String, Integer> stock = new Map <String,Integer>();
+		Map<String, Integer> vencidas = new Map <String,Integer>();
+		Set<Vacuna> vacunas = new Set <Vacuna>();
 	}
-	
-	
-	public static HashMap<String,Integer> reporteVacunasVencidas() {
+		
+	public Map<String,Integer> reporteVacunasVencidas() {
 		return vencidas;
 	}
 	
-	public static void quitarVencidas() { 
+	public void quitarVencidas() { 
 		for (Vacuna v : vacunas) { 
 			if (v.DiasVencimiento() <= 0) {
 				vencidas.replace(v.getNombre(), vencidas.get(v.getNombre()) + 1 );
-				v= null;
+				vacunas.remove(v);
 			}
 		}
 	}
@@ -44,35 +43,37 @@ public class Almacen {
 		return vacunasListas;
 	}
 
-	public static boolean verificarVacuna (String nombre) { 
-		if (nombre == "Sputnik" || nombre == "Pfizer" || nombre == "Sinopharm" || nombre == "Moderna" || nombre == "Astrazeneca") 
+	public boolean verificarVacuna (String nombre) { 
+		if (nombre == "Sputnik" || nombre == "Pfizer" || nombre == "Sinopharm" || nombre == "Moderna" || nombre == "Astrazeneca") {
 			return true;
-		return false;
+		}
+		else {
+			return false;
+		}
 	}
 	
-	public void ingresarVacuna(String nombre) {
-		if (verificarVacuna(nombre) == true) {
+	public void ingresarVacuna(String nombre, Fecha fecha) {
+		if (verificarVacuna(nombre)) {
 			if (nombre == "Sputnik")
-				vacunas.add(new Sputnik(Fecha.hoy()));
+				vacunas.add(new Sputnik(fecha));
 			if (nombre == "Pfizer") 
-				vacunas.add(new Pfizer(Fecha.hoy()));
+				vacunas.add(new Pfizer(fecha));
 			if (nombre == "Sinopharm")
-				vacunas.add(new Sinopharm(Fecha.hoy()));
+				vacunas.add(new Sinopharm(fecha));
 			if (nombre == "Moderna")
-				vacunas.add(new Moderna(Fecha.hoy()));	
+				vacunas.add(new Moderna(fecha));	
 			if (nombre == "Astrazeneca")
-				vacunas.add(new Astrazeneca(Fecha.hoy()));
+				vacunas.add(new Astrazeneca(fecha));
 		}
 	}
 		
 	public static int vacunasDisponibles() { 
-		Integer contador = 0;
+		int contador = 0;
 		for (int i=0; i< stock.size(); i++) { 
 			contador += stock.get(i); 
 		}
 		return contador;
 	}
-
 
 	public static int vacunasDisponibles(String nombreVacuna) {
 		return stock.get(nombreVacuna);

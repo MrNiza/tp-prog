@@ -8,11 +8,22 @@ public class Persona {
 	private Turno turno;
 	private boolean vacunado;
 
-	public Persona(int dni, int edad) {
+	public Persona(int dni, int edad, int prioridad) {
 		this.dni = dni;
 		this.edad = edad;
-		this.prioridad = 0;
+		this.prioridad = prioridad;
 		this.vacunado = false;
 	}
 	
+	public int darDni() {
+		return this.dni;
+	}
+	
+	public boolean estaVacunado() {
+		return this.vacunado;
+	}
+	
+	public boolean tieneTurno() {
+		return turno == null;
+	}
 }
