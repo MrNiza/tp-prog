@@ -3,6 +3,8 @@ package trabajoPractico;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Administracion {
@@ -19,8 +21,9 @@ public class Administracion {
 		this.turnosGenerados = new HashMap <Integer, Fecha>();
 	}
 	
-	//FIXME 
 	public static void ingresarPersona(int dni, Fecha nacimiento, boolean tienePadecimientos, boolean esTrabajadorSalud) {
+		if (listaEspera.contains(dni))
+			throw new RuntimeException ("Esta persona ya está inscripta");
 		if (nacimiento.diferenciaAnios(Fecha.hoy(), nacimiento) < 18) {
 			throw new RuntimeException ("No se puede ingresar un menor de edad");
 		} 
@@ -38,14 +41,14 @@ public class Administracion {
 	}
 	
 	//FIXME
-	private void asignarColaPrioridad() {
-		/*
+	private static void asignarColaPrioridad() {
+		//hay que agregarlas en orden
 		for (Persona p : listaEspera) {
-		compareTO
+			colaPrioridad.add(p); 
 		}
-		*/
 	}
 	
+	//FIXME fecha 
 	public void generarTurnos(Fecha fechaInicial) {  
 		for (Persona p : listaEspera) {
 			if (p.getTurno() < fechaInicial) 
@@ -55,28 +58,49 @@ public class Administracion {
 		Almacen.quitarVencidas();
 		
 		for (int i= 0;  i < CentroVacunacion.getCapacidad(); i++) { //hasta cubrir capacidad
-			for (Persona p : colaPriodidad) { //recorro lista de espera ya ordenada 
+			for (Persona p : colaPrioridad) { //recorro lista de espera ya ordenada 
 					turnosGenerados.put(p.getDni(), fechaInicial);
 				}
 			}
 		}
 	
-	//TODO
 	public List<Integer> turnosConFecha(Fecha fecha){
-		
+		List <Integer> turnosConFecha = new LinkedList <Integer>();
+		for (Integer clave: turnosGenerados.keySet()) { 
+			if (turnosGenerados.get(clave) == fecha) {
+				turnosConFecha.add(clave);
+			}
+		}
+		return turnosConFecha;
 	}
 		
 	public static void vacunarInscripto(int dni, Fecha fecha) {
-		//Recorre la lista de turnos y verifica que el dni y la fecha esten. 
-		/* for (Persona p : //listaTurnos){
-			if (p.getDni() == dni && p.getFecha() == fecha) 
-				p.setVacunado();
-			}
-		*/
-	}
+		boolean encontrado = false; 
+		 for (Integer clave : turnosGenerados.keySet()){
+			 if (clave == dni && turnosGenerados.get(clave) == fecha) {
+				encontrado = true; 
+				for (Persona p : colaPrioridad) {
+					if (p.getDni() == clave)
+						p.setVacunado();
+						Almacen.asignarVacuna(p.getPrioridad());
+				}
+		 	}
+		 }
+		 if (!encontrado) 
+			 throw new RuntimeException ("La persona no se encuentra registrada o no tiene fecha para ese día");
+		}
+	
 	
 	public HashMap <Integer, String> reporteVacunacion() {
 		return historialVacunados;
+	}
+
+	public List<Integer> listaDeEspera() {
+		List <Integer> lista = new LinkedList <Integer>();
+		for (Persona p : colaPrioridad) {
+			lista.add(p.getDni());
+		}
+		return lista;
 	}
 	
 }
