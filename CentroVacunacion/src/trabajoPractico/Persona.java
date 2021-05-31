@@ -8,9 +8,9 @@ public class Persona {
 	private Turno turno;
 	private boolean vacunado;
 
-	public Persona(int dni, int edad, int prioridad) {
+	public Persona(int dni,Fecha nacimiento, int prioridad) {
 		this.dni = dni;
-		this.edad = edad;
+		this.edad = nacimiento.diferenciaAnios(Fecha.hoy(),nacimiento);
 		this.prioridad = prioridad;
 		this.vacunado = false;
 	}
@@ -26,4 +26,31 @@ public class Persona {
 	public boolean tieneTurno() {
 		return turno == null;
 	}
+
+	public String darNombreVacuna() {
+		String vacuna = turno.getNombreVacuna();
+		return vacuna;
+	}
+	
+	public void asignarTurno(Turno turno) {
+		this.turno = turno;
+	}
+	
+	public void quitarTurno() {
+		this.turno = null;
+	}
+	
+	public Fecha fechaAcordada() {
+		return this.turno.darFecha();
+	}
+	
+	public Vacuna darVacuna(){
+		return this.turno.getVacuna();
+	}
+
+	
+	public int getPrioridad() {
+		return this.prioridad;
+	}
+	
 }

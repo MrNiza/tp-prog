@@ -1,5 +1,7 @@
 package trabajoPractico;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class CentroVacunacion {
 		if (cantidad <= 0) {
 			throw new RuntimeException ("La cantidad no puede ser negativa");
 		}
-		if (Almacen.verificarVacuna(nombreVacuna)) {
+		if (almacen.verificarVacuna(nombreVacuna)) {
 			throw new RuntimeException("La vacuna ingresada no existe");
 		}
 		else {
@@ -60,8 +62,8 @@ public class CentroVacunacion {
 	* total de vacunas disponibles no vencidas sin distinción por tipo.
 	*/
 	public int vacunasDisponibles() {
-		Almacen.quitarVencidas();
-		return Almacen.vacunasDisponibles();
+		almacen.quitarVencidas();
+		return almacen.vacunasDisponibles();
 	}
 	
 	/**
@@ -69,10 +71,10 @@ public class CentroVacunacion {
 	* vacuna especificado.
 	*/
 	public int vacunasDisponibles(String nombreVacuna) {
-		if(Almacen.verificarVacuna(nombreVacuna)) {
+		if(almacen.verificarVacuna(nombreVacuna)) {
 			throw new RuntimeException("La vacuna ingresada no existe");
 		}
-		return Almacen.vacunasDisponibles(nombreVacuna);
+		return almacen.vacunasDisponibles(nombreVacuna);
 	}
 	
 	/**
@@ -107,10 +109,14 @@ public class CentroVacunacion {
 	* dejará de estar disponible. Dado que estará reservada para ser aplicada
 	* el día del turno.
 	*
-	*
 	*/
 	public void generarTurnos(Fecha fechaInicial) { 
-		administracion.generarTurnos(fechaInicial);
+		actualizarStock();
+		
+		for(int i = 0; i<4; i++) {
+			HashSet<Vacuna> vacunasListas = almacen.asignarVacunas(i+1, this.capacidad);
+			administracion.generarTurnos(fechaInicial, this.capacidad);
+		}
 	}
 	
 	/**
@@ -131,7 +137,7 @@ public class CentroVacunacion {
 	* - Si no está inscripto o no tiene turno ese día, se genera una Excepcion.
 	*/
 	public void vacunarInscripto(int dni, Fecha fechaVacunacion) { 
-		Administracion.vacunarInscripto(dni, fechaVacunacion);
+		administracion.vacunarInscripto(dni, fechaVacunacion);
 	}
 	
 	/**
@@ -149,10 +155,15 @@ public class CentroVacunacion {
 	* - valor: cantidad de vacunas vencidas conocidas hasta el momento.
 	*/
 	public Map<String, Integer> reporteVacunasVencidas(){
-		return Almacen.reporteVacunasVencidas();
+		return almacen.reporteVacunasVencidas();
 	}
 	
-	public int getCapacidad() { 
-		return this.capacidad; 
+	/**
+	 * revisa los turnos vencidos y reasigna las vacunas reservadas al stock.
+	 */
+	public void actualizarStock() {
+		administracion.quitarTurnosVencidos();
+		almacen.quitarVencidas();
+		
 	}
 }

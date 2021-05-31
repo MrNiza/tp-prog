@@ -45,4 +45,13 @@ public abstract class Vacuna {
 	}
 
 	protected abstract boolean getPrioridadMayores();
+
+	public Fecha getFecha() {
+		return this.vencimiento;
+	}
+
+	public void reasignar() {
+		asignadaEnEspera = false;
+		
+	}
 }

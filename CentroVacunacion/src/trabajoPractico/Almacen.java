@@ -1,20 +1,20 @@
 package trabajoPractico;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Almacen {
-	private Map<String, Integer> stock;
-	private Map<String, Integer> vencidas;
-	private Set<Vacuna> vacunas;
+	private HashMap<String, Integer> stock;
+	private HashMap<String, Integer> vencidas;
+	private HashSet<Vacuna> vacunas;
 	
 	public Almacen () { 
-		Map<String, Integer> stock = new Map <String,Integer>();
-		Map<String, Integer> vencidas = new Map <String,Integer>();
-		Set<Vacuna> vacunas = new Set <Vacuna>();
+		HashMap<String, Integer> stock = new HashMap <String,Integer>();
+		HashMap<String, Integer> vencidas = new HashMap <String,Integer>();
+		HashSet<Vacuna> vacunas = new HashSet <Vacuna>();
 	}
 		
-	public Map<String,Integer> reporteVacunasVencidas() {
+	public HashMap<String,Integer> reporteVacunasVencidas() {
 		return vencidas;
 	}
 	
@@ -36,7 +36,7 @@ public class Almacen {
 				v.setAsignadaEnEspera();
 				vacunasListas.add(v);
 			}
-		if (contador == cantidad) { 
+			if (contador == cantidad) { 
 			return vacunasListas;
 			}
 		}
@@ -67,7 +67,7 @@ public class Almacen {
 		}
 	}
 		
-	public static int vacunasDisponibles() { 
+	public int vacunasDisponibles() { 
 		int contador = 0;
 		for (int i=0; i< stock.size(); i++) { 
 			contador += stock.get(i); 
@@ -75,7 +75,7 @@ public class Almacen {
 		return contador;
 	}
 
-	public static int vacunasDisponibles(String nombreVacuna) {
+	public int vacunasDisponibles(String nombreVacuna) {
 		return stock.get(nombreVacuna);
 	}
 }
