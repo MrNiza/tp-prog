@@ -22,8 +22,9 @@ public class Almacen {
 	}
 	
 	public static boolean esValida(String nombreVacuna) {
-		if (nombreVacuna.equals("Sputnik") || nombreVacuna.equals("Sinopharm") || nombreVacuna.equals("Pfizer") || nombreVacuna.equals("Moderna") || nombreVacuna.equals("Astrazeneca"))   
+		if (nombreVacuna.equals("Sputnik") || nombreVacuna.equals("Sinopharm") || nombreVacuna.equals("Pfizer") || nombreVacuna.equals("Moderna") || nombreVacuna.equals("Astrazeneca"))   {
 			return true;
+		}
 		return false; 
 	}
 	

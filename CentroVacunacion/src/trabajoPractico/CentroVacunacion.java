@@ -37,9 +37,11 @@ public class CentroVacunacion {
 		if (cantidad < 0) 
 			throw new RuntimeException ("La cantidad no puede ser negativa");
 		//por alguna razón siempre entra acá
-		if (!Almacen.esValida(nombreVacuna)) 
+		if (Almacen.esValida(nombreVacuna)) {
+			Almacen.ingresarVacuna(nombreVacuna, cantidad,  fechaIngreso); 
+		} else { 
 			throw new RuntimeException ("El nombre ingresado no es válido"); 
-		Almacen.ingresarVacuna(nombreVacuna, cantidad,  fechaIngreso); 
+		}
 	}
 	
 	public int vacunasDisponibles() {
