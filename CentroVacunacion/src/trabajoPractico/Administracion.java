@@ -36,7 +36,6 @@ public class Administracion {
 		} else { 
 			listaEspera.add(new Persona(dni, nacimiento, 4));
 		}
-		
 		asignarColaPrioridad();
 	}
 	
@@ -49,7 +48,8 @@ public class Administracion {
 	}
 	
 	//FIXME fecha 
-	public void generarTurnos(Fecha fechaInicial) {  
+	public void generarTurnos(Fecha fechaInicial) {
+		
 		for (Persona p : listaEspera) {
 			if (p.getTurno() < fechaInicial) 
 				p = null;

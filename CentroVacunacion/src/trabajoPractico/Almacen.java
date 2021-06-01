@@ -2,16 +2,18 @@ package trabajoPractico;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class Almacen {
 	private static HashMap<String, Integer> stock;
 	private static HashMap<String, Integer> vencidas;
-	private static HashSet<Vacuna> vacunas;
+	private static HashSet<Vacuna> listaVacunas;
 	
 	public Almacen () { 
-		HashMap<String, Integer> stock = new HashMap <String,Integer>();
-		HashMap<String, Integer> vencidas = new HashMap <String,Integer>();
-		HashSet<Vacuna> vacunas = new HashSet <Vacuna>();
+		this.stock = new HashMap <String,Integer>();
+		this.vencidas = new HashMap <String,Integer>();
+		this.listaVacunas = new HashSet <Vacuna>();
 	}
 	
 	
@@ -19,8 +21,25 @@ public class Almacen {
 		return vencidas;
 	}
 	
+	public void ingresarVacuna(String nombre) {
+		if (!verificarVacuna(nombre)) 
+			throw new RuntimeException ("La vacuna ingresada no existe");
+		else {
+			if (nombre == "Sputnik")
+				listaVacunas.add(new Vacuna3Grados(nombre,true,Fecha.hoy()));
+			if (nombre == "Pfizer") 
+				listaVacunas.add(new VacunaMenos18(nombre,true,Fecha.hoy()));
+			if (nombre == "Sinopharm")
+				listaVacunas.add(new Vacuna3Grados(nombre,false,Fecha.hoy()));
+			if (nombre == "Moderna")
+				listaVacunas.add(new VacunaMenos18(nombre,false,Fecha.hoy()));	
+			if (nombre == "Astrazeneca")
+				listaVacunas.add(new Vacuna3Grados(nombre,false,Fecha.hoy()));
+		}
+	}
+	
 	public static void quitarVencidas() { 
-		for (Vacuna v : vacunas) { 
+		for (Vacuna v : listaVacunas) { 
 			if (v.DiasVencimiento() <= 0) {
 				vencidas.replace(v.getNombre(), vencidas.get(v.getNombre()) + 1 );
 				v= null;
@@ -31,7 +50,7 @@ public class Almacen {
 	public HashSet<Vacuna> asignarVacunas(int prioridad, int cantidad) {
 		HashSet <Vacuna> vacunasListas = new HashSet <Vacuna>();
 		Integer contador = 0;
-		for (Vacuna v : vacunas) {
+		for (Vacuna v : listaVacunas) {
 			if(v.getPrioridadMayores() && prioridad == 1) {
 				contador++;
 				v.setAsignadaEnEspera();
@@ -52,23 +71,6 @@ public class Almacen {
 		return false;
 	}
 	
-	//TODO
-	public void ingresarVacuna(String nombre) {
-		if (!verificarVacuna(nombre)) 
-			throw new RuntimeException ("La vacuna ingresada no existe");
-		else {
-			if (nombre == "Sputnik")
-				vacunas.add(new Vacuna3Grados(nombre,true,Fecha.hoy()));
-			if (nombre == "Pfizer") 
-				vacunas.add(new VacunaMenos18(nombre,true,Fecha.hoy()));
-			if (nombre == "Sinopharm")
-				vacunas.add(new Vacuna3Grados(nombre,false,Fecha.hoy()));
-			if (nombre == "Moderna")
-				vacunas.add(new VacunaMenos18(nombre,false,Fecha.hoy()));	
-			if (nombre == "Astrazeneca")
-				vacunas.add(new Vacuna3Grados(nombre,false,Fecha.hoy()));
-		}
-	}
 		
 	public static int vacunasDisponibles() { 
 		Integer contador = 0;

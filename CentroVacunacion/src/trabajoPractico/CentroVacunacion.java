@@ -4,19 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 public class CentroVacunacion {
-	private String nombre;
+	private static String nombre;
 	private static Integer capacidad;
-	private Fecha fecha;
-	private Administracion administracion;
-	private Almacen almacen;
+	private static  Fecha fecha;
+	private static Administracion administracion;
+	private static Almacen almacen;
 	
-	
-	/**
-	* Constructor.
-	* recibe el nombre del centro y la capacidad de vacunación diaria.
-	* Si la capacidad de vacunación no es positiva se debe generar una excepción.
-	* Si el nombre no está definido, se debe generar una excepción.
-	*/
 	public CentroVacunacion (String nombreCentro, int capacidadVacunacionDiaria) {
 		
 		if (capacidadVacunacionDiaria <= 0) {
@@ -28,42 +21,27 @@ public class CentroVacunacion {
 		this.fecha = Fecha.hoy();
 		this.administracion = new Administracion();
 		this.almacen = new Almacen();
-		
 	}	
+	
+	public  String toString() {
+		return "Nombre: " + nombre + " Capacidad:" + capacidad;  
+	}
 	
 	public static int getCapacidad() { 
 		return capacidad; 
 	}
 	
-	/**
-	* Solo se pueden ingresar los tipos de vacunas planteados en la 1ra parte.
-	* Si el nombre de la vacuna no coincidiera con los especificados se debe generar
-	* una excepción.
-	* También se genera excepción si la cantidad es negativa.
-	* La cantidad se debe
-	* sumar al stock existente, tomando en cuenta las vacunas ya utilizadas.
-	*/
 	public void ingresarVacunas(String nombreVacuna, int cantidad, Fecha fechaIngreso) {
 		if (cantidad < 0) 
 			throw new RuntimeException ("La cantidad no puede ser negativa");
-		if(Almacen.verificarVacuna(nombreVacuna)==false)
-			throw new RuntimeException("La vacuna ingresada no existe");
 		almacen.ingresarVacuna(nombreVacuna); 
 	}
 	
-	/**
-	* total de vacunas disponibles no vencidas sin distinción por tipo.
-	*/
 	public int vacunasDisponibles() {
 		Almacen.quitarVencidas();
 		return Almacen.vacunasDisponibles();
 	}
 	
-	
-	/**
-	* total de vacunas disponibles no vencidas que coincida con el nombre de
-	* vacuna especificado.
-	*/
 	public int vacunasDisponibles(String nombreVacuna) {
 		if(Almacen.verificarVacuna(nombreVacuna)==false)
 			throw new RuntimeException("La vacuna ingresada no existe");
