@@ -43,4 +43,8 @@ public abstract class Vacuna {
 	protected boolean getPrioridadMayores() {
 		return prioridadMayores; 
 	}
+	
+	public String toString() { 
+		return "Nombre: " + this.nombre; 
+	}
 }

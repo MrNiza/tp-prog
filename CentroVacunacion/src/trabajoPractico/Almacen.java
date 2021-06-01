@@ -21,26 +21,30 @@ public class Almacen {
 		return vencidas;
 	}
 	
-	public void ingresarVacuna(String nombre) {
-		if (!verificarVacuna(nombre)) 
-			throw new RuntimeException ("La vacuna ingresada no existe");
-		else {
-			if (nombre == "Sputnik")
-				listaVacunas.add(new Vacuna3Grados(nombre,true,Fecha.hoy()));
-			if (nombre == "Pfizer") 
-				listaVacunas.add(new VacunaMenos18(nombre,true,Fecha.hoy()));
-			if (nombre == "Sinopharm")
-				listaVacunas.add(new Vacuna3Grados(nombre,false,Fecha.hoy()));
-			if (nombre == "Moderna")
-				listaVacunas.add(new VacunaMenos18(nombre,false,Fecha.hoy()));	
-			if (nombre == "Astrazeneca")
-				listaVacunas.add(new Vacuna3Grados(nombre,false,Fecha.hoy()));
-		}
+	public static boolean esValida(String nombreVacuna) {
+		if (nombreVacuna.equals("Sputnik") || nombreVacuna.equals("Sinopharm") || nombreVacuna.equals("Pfizer") || nombreVacuna.equals("Moderna") || nombreVacuna.equals("Astrazeneca"))   
+			return true;
+		return false; 
 	}
 	
+	public static void ingresarVacuna(String nombre, int Cantidad, Fecha fechaIngreso) {
+		if (nombre.equals("Sputnik"))
+				listaVacunas.add(new Vacuna3Grados(nombre,true,fechaIngreso));
+		if (nombre.equals("Pfizer")) 
+				listaVacunas.add(new VacunaMenos18(nombre,true,fechaIngreso));
+		if (nombre.equals("Sinopharm"))
+				listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+		if (nombre.equals("Moderna")) 
+				listaVacunas.add(new VacunaMenos18(nombre,false,fechaIngreso));	
+		if (nombre.equals("Astrazeneca"))
+				listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+		}
+	
+	//FIXME
 	public static void quitarVencidas() { 
+		//error de nullpointer, recorrer de otra forma?
 		for (Vacuna v : listaVacunas) { 
-			if (v.DiasVencimiento() <= 0) {
+			if (v != null && v.DiasVencimiento() <= 0) {
 				vencidas.replace(v.getNombre(), vencidas.get(v.getNombre()) + 1 );
 				v= null;
 			}
@@ -63,12 +67,6 @@ public class Almacen {
 			}
 		}
 		return vacunasListas;
-	}
-
-	public static boolean verificarVacuna (String nombre) { 
-		if (nombre == "Sputnik" || nombre == "Pfizer" || nombre == "Sinopharm" || nombre == "Moderna" || nombre == "Astrazeneca") 
-			return true;
-		return false;
 	}
 	
 		
@@ -110,5 +108,6 @@ public class Almacen {
 		
 		}
 	}
+
 }
 

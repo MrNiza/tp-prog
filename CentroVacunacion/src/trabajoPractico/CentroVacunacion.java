@@ -1,14 +1,15 @@
 package trabajoPractico;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 public class CentroVacunacion {
 	private static String nombre;
-	private static Integer capacidad;
-	private static  Fecha fecha;
-	private static Administracion administracion;
-	private static Almacen almacen;
+	private static int capacidad;
+	private Fecha fecha;
+	private Administracion administracion;
+	private Almacen almacen;
 	
 	public CentroVacunacion (String nombreCentro, int capacidadVacunacionDiaria) {
 		
@@ -31,10 +32,14 @@ public class CentroVacunacion {
 		return capacidad; 
 	}
 	
+	//FIXME
 	public void ingresarVacunas(String nombreVacuna, int cantidad, Fecha fechaIngreso) {
 		if (cantidad < 0) 
 			throw new RuntimeException ("La cantidad no puede ser negativa");
-		almacen.ingresarVacuna(nombreVacuna); 
+		//por alguna razón siempre entra acá
+		if (!Almacen.esValida(nombreVacuna)) 
+			throw new RuntimeException ("El nombre ingresado no es válido"); 
+		Almacen.ingresarVacuna(nombreVacuna, cantidad,  fechaIngreso); 
 	}
 	
 	public int vacunasDisponibles() {
@@ -43,8 +48,8 @@ public class CentroVacunacion {
 	}
 	
 	public int vacunasDisponibles(String nombreVacuna) {
-		if(Almacen.verificarVacuna(nombreVacuna)==false)
-			throw new RuntimeException("La vacuna ingresada no existe");
+		if (!Almacen.esValida(nombreVacuna)) 
+			throw new RuntimeException ("La vacuna ingresada no es válida");
 		return Almacen.vacunasDisponibles(nombreVacuna);
 	}
 	

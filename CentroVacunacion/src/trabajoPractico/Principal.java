@@ -14,13 +14,13 @@ public class Principal {
 		centro.ingresarVacunas("Moderna", 10, new Fecha(15,5,2021));
 		centro.ingresarVacunas("Pfizer", 10, new Fecha(15,5,2021));
 
-//		centro.inscribirPersona(34701000, new Fecha(1, 5, 1989), false, false);
-//		centro.inscribirPersona(29959000, new Fecha(20, 11, 1982), false, true);
-//		centro.inscribirPersona(24780201, new Fecha(1, 6, 1972), true, false);
-//		centro.inscribirPersona(29223000, new Fecha(2, 5, 1982), false, true);
-//		centro.inscribirPersona(13000000, new Fecha(1, 5, 1958), true, false);
-//		centro.inscribirPersona(13000050, new Fecha(20, 6, 1958), false, true);
-//		
+		centro.inscribirPersona(34701000, new Fecha(1, 5, 1989), false, false);
+		centro.inscribirPersona(29959000, new Fecha(20, 11, 1982), false, true);
+		centro.inscribirPersona(24780201, new Fecha(1, 6, 1972), true, false);
+		centro.inscribirPersona(29223000, new Fecha(2, 5, 1982), false, true);
+		centro.inscribirPersona(13000000, new Fecha(1, 5, 1958), true, false);
+		centro.inscribirPersona(13000050, new Fecha(20, 6, 1958), false, true);
+		
 //		centro.generarTurnos(fTurnos);
 //
 //		System.out.println("-------------- Turnos -------------");
