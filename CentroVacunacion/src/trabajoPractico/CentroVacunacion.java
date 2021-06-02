@@ -1,31 +1,20 @@
 package trabajoPractico;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 public class CentroVacunacion {
-	private String nombre;
-	private Integer capacidad;
+	private static String nombre;
+	private static int capacidad;
 	private Fecha fecha;
 	private Administracion administracion;
 	private Almacen almacen;
 	
-	
-	/**
-	* Constructor.
-	* recibe el nombre del centro y la capacidad de vacunación diaria.
-	* Si la capacidad de vacunación no es positiva se debe generar una excepción.
-	* Si el nombre no está definido, se debe generar una excepción.
-	*/
 	public CentroVacunacion (String nombreCentro, int capacidadVacunacionDiaria) {
 		
 		if (capacidadVacunacionDiaria <= 0) {
 			throw new RuntimeException("La capacidad no puede ser negativa");
-		}
-		if (nombreCentro == "") {
-			throw new RuntimeException("Se requiere un nombre");
 		}
 		
 		this.nombre = nombreCentro;
@@ -33,49 +22,38 @@ public class CentroVacunacion {
 		this.fecha = Fecha.hoy();
 		this.administracion = new Administracion();
 		this.almacen = new Almacen();
-		
 	}	
-
-	/**
-	* Solo se pueden ingresar los tipos de vacunas planteados en la 1ra parte.
-	* Si el nombre de la vacuna no coincidiera con los especificados se debe generar
-	* una excepción.
-	* También se genera excepción si la cantidad es negativa.
-	* La cantidad se debe
-	* sumar al stock existente, tomando en cuenta las vacunas ya utilizadas.
-	*/
+	
+	public  String toString() {
+		return "Nombre: " + nombre + " Capacidad:" + capacidad;  
+	}
+	
+	public static int getCapacidad() { 
+		return capacidad; 
+	}
+	
 	public void ingresarVacunas(String nombreVacuna, int cantidad, Fecha fechaIngreso) {
-		if (cantidad <= 0) {
+		if (cantidad <= 0) 
 			throw new RuntimeException ("La cantidad no puede ser negativa");
-		}
-		if (almacen.verificarVacuna(nombreVacuna)) {
-			throw new RuntimeException("La vacuna ingresada no existe");
-		}
-		else {
-			for(int i = 0; i<cantidad; i++) {
-				almacen.ingresarVacuna(nombreVacuna, fechaIngreso);
-			}
+		//por alguna razón siempre entra acá
+		if (Almacen.esValida(nombreVacuna)) {
+			Almacen.ingresarVacuna(nombreVacuna, cantidad,  fechaIngreso); 
+		} else { 
+			throw new RuntimeException ("El nombre ingresado no es válido"); 
 		}
 	}
 	
-	/**
-	* total de vacunas disponibles no vencidas sin distinción por tipo.
-	*/
 	public int vacunasDisponibles() {
-		almacen.quitarVencidas();
-		return almacen.vacunasDisponibles();
+		Almacen.quitarVencidas();
+		return Almacen.vacunasDisponibles();
 	}
 	
-	/**
-	* total de vacunas disponibles no vencidas que coincida con el nombre de
-	* vacuna especificado.
-	*/
 	public int vacunasDisponibles(String nombreVacuna) {
-		if(almacen.verificarVacuna(nombreVacuna)) {
-			throw new RuntimeException("La vacuna ingresada no existe");
-		}
-		return almacen.vacunasDisponibles(nombreVacuna);
+		if (!Almacen.esValida(nombreVacuna)) 
+			throw new RuntimeException ("La vacuna ingresada no es válida");
+		return Almacen.vacunasDisponibles(nombreVacuna);
 	}
+	
 	
 	/**
 	* Se inscribe una persona en lista de espera.
@@ -84,7 +62,7 @@ public class CentroVacunacion {
 	* Si la persona ya fue vacunada, también debe generar una excepción.
 	*/
 	public void inscribirPersona(int dni, Fecha nacimiento, boolean tienePadecimientos, boolean esEmpleadoSalud) {
-		administracion.ingresarPersona(dni, nacimiento, tienePadecimientos, esEmpleadoSalud);
+		Administracion.ingresarPersona(dni, nacimiento, tienePadecimientos, esEmpleadoSalud);
 	}
 	
 	/**
@@ -93,7 +71,7 @@ public class CentroVacunacion {
 	* Si no quedan inscriptos sin vacunas debe devolver una lista vacía.
 	*/
 	public List<Integer> listaDeEspera() {
-		return administracion.enEspera();
+		return administracion.listaDeEspera();
 		}
 	
 	/**
@@ -109,14 +87,10 @@ public class CentroVacunacion {
 	* dejará de estar disponible. Dado que estará reservada para ser aplicada
 	* el día del turno.
 	*
+	*
 	*/
 	public void generarTurnos(Fecha fechaInicial) { 
-		actualizarStock();
-		
-		for(int i = 0; i<4; i++) {
-			HashSet<Vacuna> vacunasListas = almacen.asignarVacunas(i+1, this.capacidad);
-			administracion.generarTurnos(fechaInicial, this.capacidad);
-		}
+		administracion.generarTurnos(fechaInicial);
 	}
 	
 	/**
@@ -137,7 +111,7 @@ public class CentroVacunacion {
 	* - Si no está inscripto o no tiene turno ese día, se genera una Excepcion.
 	*/
 	public void vacunarInscripto(int dni, Fecha fechaVacunacion) { 
-		administracion.vacunarInscripto(dni, fechaVacunacion);
+		Administracion.vacunarInscripto(dni, fechaVacunacion);
 	}
 	
 	/**
@@ -155,15 +129,7 @@ public class CentroVacunacion {
 	* - valor: cantidad de vacunas vencidas conocidas hasta el momento.
 	*/
 	public Map<String, Integer> reporteVacunasVencidas(){
-		return almacen.reporteVacunasVencidas();
+		return Almacen.reporteVacunasVencidas();
 	}
-	
-	/**
-	 * revisa los turnos vencidos y reasigna las vacunas reservadas al stock.
-	 */
-	public void actualizarStock() {
-		administracion.quitarTurnosVencidos();
-		almacen.quitarVencidas();
-		
-	}
+
 }

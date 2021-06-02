@@ -1,56 +1,76 @@
 package trabajoPractico;
 
-public class Persona {
+public class Persona implements Comparable<Persona> {
 
-	private int dni;
-	private int edad;
-	private int prioridad;
-	private Turno turno;
-	private boolean vacunado;
+	private  int dni;
+	private  int edad;
+	private  int prioridad;
+	private  Fecha turno;
+	private  boolean vacunado;
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + dni;
+		result = prime * result + prioridad;
+		return result;
+	}
 
-	public Persona(int dni,Fecha nacimiento, int prioridad) {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Persona other = (Persona) obj;
+		if (dni != other.dni)
+			return false;
+		if (prioridad != other.prioridad)
+			return false;
+		return true;
+	}
+
+	public Persona(int dni, Fecha nacimiento, int prioridad) {
 		this.dni = dni;
-		this.edad = nacimiento.diferenciaAnios(Fecha.hoy(),nacimiento);
+		this.edad = nacimiento.diferenciaAnios(Fecha.hoy(), nacimiento);
 		this.prioridad = prioridad;
 		this.vacunado = false;
 	}
-	
-	public int darDni() {
-		return this.dni;
-	}
-	
-	public boolean estaVacunado() {
-		return this.vacunado;
-	}
-	
-	public boolean tieneTurno() {
-		return turno == null;
+
+	public int getDni () {
+		return dni; 
 	}
 
-	public String darNombreVacuna() {
-		String vacuna = turno.getNombreVacuna();
-		return vacuna;
+	public void setVacunado() { 
+		vacunado = true; 
 	}
 	
-	public void asignarTurno(Turno turno) {
-		this.turno = turno;
+	public Fecha getTurno() {
+		return turno; 
 	}
 	
-	public void quitarTurno() {
-		this.turno = null;
-	}
 	
-	public Fecha fechaAcordada() {
-		return this.turno.darFecha();
-	}
 	
-	public Vacuna darVacuna(){
-		return this.turno.getVacuna();
+	public void setTurno(Fecha fecha) {
+		turno = fecha; 
 	}
 
-	
 	public int getPrioridad() {
 		return this.prioridad;
+	}
+	
+	@Override
+	public int compareTo(Persona otra) {
+		if (this.prioridad == otra.prioridad) {
+			return 0;
+		} else if (this.prioridad < otra.prioridad) {
+			return 1;
+		} else {
+			return -1; 
+		}	
 	}
 	
 }
