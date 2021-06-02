@@ -46,5 +46,9 @@ public abstract class Vacuna {
 	
 	public String toString() { 
 		return "Nombre: " + this.nombre; 
+
+	public void reasignar() {
+		asignadaEnEspera = false;
+  
 	}
 }

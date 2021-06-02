@@ -1,5 +1,6 @@
 package trabajoPractico;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +17,6 @@ public class Almacen {
 		this.vencidas = new HashMap <String,Integer>();
 		this.listaVacunas = new HashSet <Vacuna>();
 	}
-	
 	
 	public static HashMap<String,Integer> reporteVacunasVencidas() {
 		return vencidas;
@@ -59,22 +59,38 @@ public class Almacen {
 		}
 	}
 	
-	public HashSet<Vacuna> asignarVacunas(int prioridad, int cantidad) {
+	public HashSet<Vacuna> asignarVacunasEspeciales(int capacidad) {
 		HashSet <Vacuna> vacunasListas = new HashSet <Vacuna>();
-		Integer contador = 0;
+  
+		Integer contador = capacidad;
 		for (Vacuna v : listaVacunas) {
-			if(v.getPrioridadMayores() && prioridad == 1) {
-				contador++;
+			if(contador > 0 && v.getPrioridadMayores()) {
+				contador--;
 				v.setAsignadaEnEspera();
 				vacunasListas.add(v);
-			}	
-		if (contador == cantidad) { 
-			return vacunasListas;
+			}
+			else { 
+				break;
 			}
 		}
 		return vacunasListas;
 	}
 	
+	public HashSet<Vacuna> asignarVacunasGenerales(int capacidad) {
+		HashSet <Vacuna> vacunasListas = new HashSet <Vacuna>();
+		Integer contador = capacidad;
+		for (Vacuna v : listaVacunas) {
+			if(contador > 0 && !v.getPrioridadMayores()) {
+				contador--;
+				v.setAsignadaEnEspera();
+				vacunasListas.add(v);
+			}
+			else { 
+				break;
+			}
+		}
+		return vacunasListas;
+	}
 		
 	public static int vacunasDisponibles() { 
 		int contador = 0;
