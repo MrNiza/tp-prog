@@ -9,7 +9,7 @@ import java.util.Map;
 public class Administracion {
 
 	private HashSet<Persona> listaEspera;
-	private ArrayList<HashSet<Persona>> colasPrioridad; //no creo que este bn pero me parecio lo mejor de momento
+	private ArrayList<HashSet<Persona>> colasPrioridad;
 	private HashSet<Turno> turnosVigentes;
 	private HashSet<Persona> historialVacunados;
 	
@@ -97,7 +97,7 @@ public class Administracion {
 	}
 	
 	public void generarTurnos(Fecha fecha, int capacidad) {
-		moverPrioridad();
+		
 	}
 	
 	public boolean verificaTurno(Persona persona) {	
@@ -105,7 +105,7 @@ public class Administracion {
 		return diff <= 0 && turnosVigentes.contains(persona);
 	}
 	
-	public void vacunado() {
+	public void vacunarInscripto(int dni, Fecha fecha) {
 		
 	}
 	
@@ -143,7 +143,6 @@ public class Administracion {
 			}
 		}
 	}
-
 	
 	public Map<Integer, String> reporteVacunacion() {
 		HashMap<Integer, String> historial = new HashMap<Integer, String>();
@@ -151,6 +150,38 @@ public class Administracion {
 			historial.put(p.darDni(), p.darNombreVacuna());
 		}
 		return historial;
+	}
+	
+	/**
+	 * aqui se selecciona a las personas que recibiran la vacuna,
+	 * devolviendo una lista con los datos de las personas cuya cantidad 
+	 * esta determinada por la capacidad de vacunacion
+	 */
+	public ArrayList<Persona> asignarPersonas(int capacidad){
+		ArrayList<Persona> asignados = new ArrayList<Persona>();
+		moverPrioridad();
+		int cont = capacidad;
+		HashSet<Persona> aux;
+				
+		for(int i = 0; i < 4; i++) {
+			aux = colasPrioridad.get(i);
+			for(Persona p: aux) {
+				if(cont >= 0) {
+				asignados.add(p);
+				}
+				else {
+					break;
+				}
+			}
+					
+		}
+		return asignados;
+	}
+
+
+	public List<Integer> turnosConFecha(Fecha fecha) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

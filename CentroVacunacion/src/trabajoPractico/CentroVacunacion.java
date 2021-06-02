@@ -48,12 +48,9 @@ public class CentroVacunacion {
 		if (cantidad <= 0) {
 			throw new RuntimeException ("La cantidad no puede ser negativa");
 		}
-		if (almacen.verificarVacuna(nombreVacuna)) {
-			throw new RuntimeException("La vacuna ingresada no existe");
-		}
 		else {
 			for(int i = 0; i<cantidad; i++) {
-				almacen.ingresarVacuna(nombreVacuna, fechaIngreso);
+				almacen.ingresarVacuna(nombreVacuna);
 			}
 		}
 	}
@@ -71,9 +68,10 @@ public class CentroVacunacion {
 	* vacuna especificado.
 	*/
 	public int vacunasDisponibles(String nombreVacuna) {
-		if(almacen.verificarVacuna(nombreVacuna)) {
+		if(!almacen.verificarVacuna(nombreVacuna)) {
 			throw new RuntimeException("La vacuna ingresada no existe");
 		}
+		almacen.quitarVencidas();
 		return almacen.vacunasDisponibles(nombreVacuna);
 	}
 	
@@ -112,11 +110,10 @@ public class CentroVacunacion {
 	*/
 	public void generarTurnos(Fecha fechaInicial) { 
 		actualizarStock();
+		administracion.asignarPersonas(this.capacidad);
 		
-		for(int i = 0; i<4; i++) {
-			HashSet<Vacuna> vacunasListas = almacen.asignarVacunas(i+1, this.capacidad);
-			administracion.generarTurnos(fechaInicial, this.capacidad);
-		}
+		HashSet<Vacuna> vacunasListas = almacen.asignarVacunasEspeciales(this.capacidad);
+		
 	}
 	
 	/**

@@ -1,17 +1,18 @@
 package trabajoPractico;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Almacen {
 	private HashMap<String, Integer> stock;
 	private HashMap<String, Integer> vencidas;
-	private HashSet<Vacuna> vacunas;
+	private ArrayList<Vacuna> listaVacunas;
 	
 	public Almacen () { 
 		HashMap<String, Integer> stock = new HashMap <String,Integer>();
 		HashMap<String, Integer> vencidas = new HashMap <String,Integer>();
-		HashSet<Vacuna> vacunas = new HashSet <Vacuna>();
+		ArrayList<Vacuna> listaVacunas = new ArrayList <Vacuna>();
 	}
 		
 	public HashMap<String,Integer> reporteVacunasVencidas() {
@@ -19,25 +20,41 @@ public class Almacen {
 	}
 	
 	public void quitarVencidas() { 
-		for (Vacuna v : vacunas) { 
+		for (Vacuna v : listaVacunas) { 
 			if (v.DiasVencimiento() <= 0) {
 				vencidas.replace(v.getNombre(), vencidas.get(v.getNombre()) + 1 );
-				vacunas.remove(v);
+				listaVacunas.remove(v);
 			}
 		}
 	}
 	
-	public HashSet<Vacuna> asignarVacunas(int prioridad, int cantidad) {
+	public HashSet<Vacuna> asignarVacunasEspeciales(int capacidad) {
 		HashSet <Vacuna> vacunasListas = new HashSet <Vacuna>();
-		Integer contador = 0;
-		for (Vacuna v : vacunas) {
-			if(v.getPrioridadMayores() == true && prioridad == 1) {
-				contador++;
+		Integer contador = capacidad;
+		for (Vacuna v : listaVacunas) {
+			if(contador > 0 && v.getPrioridadMayores()) {
+				contador--;
 				v.setAsignadaEnEspera();
 				vacunasListas.add(v);
 			}
-			if (contador == cantidad) { 
-			return vacunasListas;
+			else { 
+				break;
+			}
+		}
+		return vacunasListas;
+	}
+	
+	public HashSet<Vacuna> asignarVacunasGenerales(int capacidad) {
+		HashSet <Vacuna> vacunasListas = new HashSet <Vacuna>();
+		Integer contador = capacidad;
+		for (Vacuna v : listaVacunas) {
+			if(contador > 0 && !v.getPrioridadMayores()) {
+				contador--;
+				v.setAsignadaEnEspera();
+				vacunasListas.add(v);
+			}
+			else { 
+				break;
 			}
 		}
 		return vacunasListas;
@@ -52,18 +69,32 @@ public class Almacen {
 		}
 	}
 	
-	public void ingresarVacuna(String nombre, Fecha fecha) {
+	public void ingresarVacuna(String nombre) {
 		if (verificarVacuna(nombre)) {
-			if (nombre == "Sputnik")
-				vacunas.add(new Sputnik(fecha));
-			if (nombre == "Pfizer") 
-				vacunas.add(new Pfizer(fecha));
-			if (nombre == "Sinopharm")
-				vacunas.add(new Sinopharm(fecha));
-			if (nombre == "Moderna")
-				vacunas.add(new Moderna(fecha));	
-			if (nombre == "Astrazeneca")
-				vacunas.add(new Astrazeneca(fecha));
+			Vacuna vacuna;
+			if (nombre == "Sputnik") {
+				vacuna = new Vacuna3Grados(nombre,true,Fecha.hoy());
+				this.listaVacunas.add(vacuna);
+			}
+			if (nombre == "Pfizer") {
+				vacuna = new VacunaMenos18(nombre,true,Fecha.hoy());
+				listaVacunas.add(vacuna);
+			}
+			if (nombre == "Sinopharm") {
+				vacuna = new Vacuna3Grados(nombre,false,Fecha.hoy());
+				listaVacunas.add(vacuna);
+			}
+			if (nombre == "Moderna") {
+				vacuna = new VacunaMenos18(nombre,false,Fecha.hoy());
+				listaVacunas.add(vacuna);
+			}
+			if (nombre == "Astrazeneca") {
+				vacuna = new Vacuna3Grados(nombre,false,Fecha.hoy());
+				listaVacunas.add(vacuna);
+			}
+		}
+		else {
+			throw new RuntimeException("La vacuna ingresada no existe");
 		}
 	}
 		
