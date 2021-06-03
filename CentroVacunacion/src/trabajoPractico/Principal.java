@@ -23,17 +23,17 @@ public class Principal {
 		
 		centro.generarTurnos(fTurnos);
 
-		System.out.println("-------------- Turnos -------------");
-		System.out.println(centro.turnosConFecha(fTurnos));
-		System.out.println("-----------------------------------");
-		System.out.println();
-		
-		centro.vacunarInscripto(24780201, fTurnos);
-		centro.vacunarInscripto(13000000, fTurnos);
-
-		System.out.println("------------- Centro --------------");
-		System.out.println(centro);
-		System.out.println("-----------------------------------");
-
+//		System.out.println("-------------- Turnos -------------");
+//		System.out.println(centro.turnosConFecha(fTurnos));
+//		System.out.println("-----------------------------------");
+//		System.out.println();
+//		
+//		centro.vacunarInscripto(24780201, fTurnos);
+//		centro.vacunarInscripto(13000000, fTurnos);
+//
+//		System.out.println("------------- Centro --------------");
+//		System.out.println(centro);
+//		System.out.println("-----------------------------------");
+//
 	}
 }
