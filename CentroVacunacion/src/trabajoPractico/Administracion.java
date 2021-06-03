@@ -41,7 +41,7 @@ public class Administracion {
 	
 	//FIXME
 	private static void asignarColaPrioridad() {
-		//recorrer personas y compararlas para ingresarlas en orden segun prioridad de 1 a 4
+		//recorrer personas y compararlas para ingresarlas en orden segun prioridad de 1 a 4 :)
 	}
 	
 	public void generarTurnos(Fecha fechaInicial) {
