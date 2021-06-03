@@ -44,7 +44,11 @@ public abstract class Vacuna {
 		return prioridadMayores; 
 	}
 	
+	public String toString() { 
+		return "Nombre: " + this.nombre; 
+
 	public void reasignar() {
 		asignadaEnEspera = false;
+  
 	}
 }
