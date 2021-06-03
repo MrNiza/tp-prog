@@ -1,3 +1,4 @@
+
 package trabajoPractico;
 
 import java.util.HashSet;
@@ -50,11 +51,11 @@ public class CentroVacunacion {
 	
 	public int vacunasDisponibles(String nombreVacuna) {
 
-		if(!almacen.verificarVacuna(nombreVacuna)) {
+		if(!Almacen.esValida(nombreVacuna)) {
 			throw new RuntimeException("La vacuna ingresada no existe");
 		}
-		almacen.quitarVencidas();
-		return almacen.vacunasDisponibles(nombreVacuna);
+		Almacen.quitarVencidas();
+		return Almacen.vacunasDisponibles(nombreVacuna);
 	}
 	
 	
@@ -93,7 +94,8 @@ public class CentroVacunacion {
 	*
 	*/
 	public void generarTurnos(Fecha fechaInicial) { 
-		actualizarStock();
+		if (fecha.hoy().posterior(fechaInicial))
+			throw new RuntimeException ("No se pueden generar turnos para una fecha pasada");
 		administracion.asignarPersonas(this.capacidad);
 		
 		HashSet<Vacuna> vacunasListas = almacen.asignarVacunasEspeciales(this.capacidad);

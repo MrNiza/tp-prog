@@ -1,12 +1,12 @@
 package trabajoPractico;
 
 public abstract class Vacuna {
-	private String nombre;
-	private int temperatura;
-	private Fecha fechaIngreso;
-	private boolean prioridadMayores;
-	private boolean asignadaEnEspera;
-	private boolean utilizada;
+	protected String nombre;
+	protected int temperatura;
+	protected Fecha fechaIngreso;
+	protected boolean prioridadMayores;
+	protected boolean asignadaEnEspera;
+	protected boolean utilizada;
 
 	public Vacuna (String nombre, int temperatura, Fecha fechaIngreso, boolean prioridadMayores) {
 		this.nombre = nombre;
@@ -25,12 +25,9 @@ public abstract class Vacuna {
 		return this.temperatura;
 	}
 	
-	//FIXME
-	//Esto no va a lanzar los dias de vencimiento, solo retorna, 1, 0 o -1
-	public Integer DiasVencimiento() {
-		return fechaIngreso.compareTo(Fecha.hoy());
-		}
-	
+	public boolean vencida() {
+		return false;
+	}
 	
 	public void setAsignadaEnEspera() { 
 		asignadaEnEspera = true;
@@ -45,10 +42,12 @@ public abstract class Vacuna {
 	}
 	
 	public String toString() { 
-		return "Nombre: " + this.nombre; 
+		return "Nombre: " + this.nombre;
+	}
 
 	public void reasignar() {
 		asignadaEnEspera = false;
   
 	}
 }
+

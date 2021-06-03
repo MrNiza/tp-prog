@@ -52,7 +52,8 @@ public class Almacen {
 		
 		while(it.hasNext()){
 			Vacuna v = (Vacuna) it.next();
-			if(v.DiasVencimiento() > 0) {
+			if(v.vencida()) {
+				vencidas.replace(v.getNombre(), vencidas.get(v.getNombre())+1);
 				it.remove();
 			}
 			it.next();
@@ -106,23 +107,28 @@ public class Almacen {
 	}
 
 
-	public static void asignarVacuna(int prioridad) {
+	public static String asignarVacuna(int prioridad) {
 		if (prioridad == 1) {
 			for (String v : stock.keySet()) {
 				if (v == "Pfizer" && stock.get(v) > 0) {
 					stock.replace("Pfizer", stock.get(v)-1);
+					return "Pfizer";
 				} else if (v == "Sputnik" && stock.get(v) > 0) {
 					stock.replace("Sputnik", stock.get(v)-1);
+					return "Sputnik";
 				}
 			}
 		} else {
 			for (String v : stock.keySet()) {
 				if (v == "Moderna" && stock.get(v) > 0) {
 					stock.replace("Moderna", stock.get(v)-1);
+					return "Moderna";
 				} else if (v == "Sinopharm" && stock.get(v) > 0) {
 					stock.replace("Sinopharm", stock.get(v)-1);
+					return "Sinopharm";
 				} else if (v == "AstraZeneca" && stock.get(v) > 0) {
 					stock.replace("AstraZeneca", stock.get(v)-1);
+					return "AstraZeneca";
 				} else {
 					throw new RuntimeException ("No hay vacunas disponibles");
 				}

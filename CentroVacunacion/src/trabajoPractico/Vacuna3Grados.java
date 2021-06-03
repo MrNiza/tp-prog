@@ -6,3 +6,4 @@ public class Vacuna3Grados extends Vacuna{
 		super (nombre, 3, fechaIngreso, prioridadMayores);
 	}
 }
+

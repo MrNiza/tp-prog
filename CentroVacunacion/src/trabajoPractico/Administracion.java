@@ -41,24 +41,20 @@ public class Administracion {
 	
 	//FIXME
 	private static void asignarColaPrioridad() {
-		//hay que agregarlas en orden
-		for (Persona p : listaEspera) {
-			colaPrioridad.add(p); 
-		}
+		//recorrer personas y compararlas para ingresarlas en orden segun prioridad de 1 a 4 :)
 	}
 	
-	//FIXME fecha 
 	public void generarTurnos(Fecha fechaInicial) {
 		
 		for (Persona p : listaEspera) {
-			//if (p.getTurno() < fechaInicial) 
-				//p = null;
+			if (p.getTurno().posterior(fechaInicial)) 
+				p = null;
 		}
 
 		Almacen.quitarVencidas();
 		
 		for (int i= 0;  i < CentroVacunacion.getCapacidad(); i++) { //hasta cubrir capacidad
-			for (Persona p : colaPrioridad) { //recorro lista de espera ya ordenada 
+			for (Persona p : colaPrioridad) { 
 					turnosGenerados.put(p.getDni(), fechaInicial);
 				}
 			}
@@ -67,7 +63,7 @@ public class Administracion {
 	public List<Integer> turnosConFecha(Fecha fecha){
 		List <Integer> turnosConFecha = new LinkedList <Integer>();
 		for (Integer clave: turnosGenerados.keySet()) { 
-			if (turnosGenerados.get(clave) == fecha) {
+			if (turnosGenerados.get(clave).equals(fecha)) {
 				turnosConFecha.add(clave);
 			}
 		}
@@ -75,23 +71,19 @@ public class Administracion {
 	}
   
 	public boolean verificaTurno(Persona persona) {	
-		int diff =persona.fechaAcordada().compareTo(Fecha.hoy());
-		return diff <= 0 && turnosVigentes.contains(persona);
+		return turnosGenerados.containsKey(persona) && persona.getTurno().equals(Fecha.hoy());
 	}
 	
-	public void vacunarInscripto(int dni, Fecha fecha) {
-    
-  }
-		
 	public static void vacunarInscripto(int dni, Fecha fecha) {
 		boolean encontrado = false; 
 		 for (Integer clave : turnosGenerados.keySet()){
-			 if (clave == dni && turnosGenerados.get(clave) == fecha) {
+			 if (clave == dni && turnosGenerados.get(clave).equals(fecha)) {
 				encontrado = true; 
 				for (Persona p : colaPrioridad) {
 					if (p.getDni() == clave)
 						p.setVacunado();
 						Almacen.asignarVacuna(p.getPrioridad());
+						historialVacunados.put(p.getDni(), Almacen.asignarVacuna(p.getPrioridad()));
 				}
 		 	}
 		 }
@@ -112,14 +104,6 @@ public class Administracion {
 		return lista;
 	}
 	
-	public Map<Integer, String> reporteVacunacion() {
-		HashMap<Integer, String> historial = new HashMap<Integer, String>();
-		for(Persona p : historialVacunados) {
-			historial.put(p.darDni(), p.darNombreVacuna());
-		}
-		return historial;
-	}
-	
 	/**
 	 * aqui se selecciona a las personas que recibiran la vacuna,
 	 * devolviendo una lista con los datos de las personas cuya cantidad 
@@ -127,12 +111,12 @@ public class Administracion {
 	 */
 	public ArrayList<Persona> asignarPersonas(int capacidad){
 		ArrayList<Persona> asignados = new ArrayList<Persona>();
-		moverPrioridad();
+		asignarColaPrioridad();
 		int cont = capacidad;
 		HashSet<Persona> aux;
 				
 		for(int i = 0; i < 4; i++) {
-			aux = colasPrioridad.get(i);
+			aux = colaPrioridad.get(i);
 			for(Persona p: aux) {
 				if(cont >= 0) {
 				asignados.add(p);
@@ -145,11 +129,7 @@ public class Administracion {
 		}
 		return asignados;
 	}
-
-
-	public List<Integer> turnosConFecha(Fecha fecha) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }
+
+
+
