@@ -129,12 +129,12 @@ public class Almacen {
 				} else if (v == "AstraZeneca" && stock.get(v) > 0) {
 					stock.replace("AstraZeneca", stock.get(v)-1);
 					return "AstraZeneca";
-				} else {
-					throw new RuntimeException ("No hay vacunas disponibles");
+					} 
 				}
 			}
-		
+			throw new RuntimeException ("No hay vacunas disponibles");
 		}
-	}
 
 }
+
+
