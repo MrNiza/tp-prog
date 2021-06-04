@@ -6,6 +6,3 @@ public class VacunaMenos18 extends Vacuna{
 		super (nombre, -18, fechaIngreso, prioridadMayores);
 	}
 }
-
-
-

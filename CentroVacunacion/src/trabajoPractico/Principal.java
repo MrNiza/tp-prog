@@ -21,19 +21,19 @@ public class Principal {
 		centro.inscribirPersona(13000000, new Fecha(1, 5, 1958), true, false);
 		centro.inscribirPersona(13000050, new Fecha(20, 6, 1958), false, true);
 		
-		centro.generarTurnos(fTurnos);
-
-		System.out.println("-------------- Turnos -------------");
-		System.out.println(centro.turnosConFecha(fTurnos));
-		System.out.println("-----------------------------------");
-		System.out.println();
-		
-		centro.vacunarInscripto(24780201, fTurnos);
-		centro.vacunarInscripto(13000000, fTurnos);
-
-		System.out.println("------------- Centro --------------");
-		System.out.println(centro);
-		System.out.println("-----------------------------------");
+//		centro.generarTurnos(fTurnos);
+//
+//		System.out.println("-------------- Turnos -------------");
+//		System.out.println(centro.turnosConFecha(fTurnos));
+//		System.out.println("-----------------------------------");
+//		System.out.println();
+//		
+//		centro.vacunarInscripto(24780201, fTurnos);
+//		centro.vacunarInscripto(13000000, fTurnos);
+//
+//		System.out.println("------------- Centro --------------");
+//		System.out.println(centro);
+//		System.out.println("-----------------------------------");
 
 	}
 }

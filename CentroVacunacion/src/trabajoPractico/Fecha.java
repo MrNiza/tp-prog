@@ -63,7 +63,7 @@ public class Fecha implements Comparable<Fecha> {
 		return fecha.getDayOfMonth();
 	}
 
-	public static int diferenciaAnios(Fecha hoy, Fecha fNacimiento) {
+	public int diferenciaAnios(Fecha hoy, Fecha fNacimiento) {
 		Period periodo = fNacimiento.fecha.until(hoy.fecha);
 		return periodo.getYears();
 	}
