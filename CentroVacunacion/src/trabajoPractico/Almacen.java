@@ -30,8 +30,9 @@ public class Almacen {
 	}
 	
 	public static void ingresarVacuna(String nombre, int Cantidad, Fecha fechaIngreso) {
+		stock.put(nombre, Cantidad);
 		if (nombre.equals("Sputnik"))
-			for(int i = 0; i<Cantidad; i++)
+			for(int i = 0; i<Cantidad; i++) 
 				listaVacunas.add(new Vacuna3Grados(nombre,true,fechaIngreso));
 		if (nombre.equals("Pfizer"))
 			for(int i = 0; i<Cantidad; i++)
@@ -103,7 +104,9 @@ public class Almacen {
 
 
 	public static int vacunasDisponibles(String nombreVacuna) {
-		return stock.get(nombreVacuna);
+		if (stock.containsKey(nombreVacuna)) 
+			return stock.get(nombreVacuna);
+		return 0;
 	}
 
 
@@ -129,12 +132,12 @@ public class Almacen {
 				} else if (v == "AstraZeneca" && stock.get(v) > 0) {
 					stock.replace("AstraZeneca", stock.get(v)-1);
 					return "AstraZeneca";
-				} else {
-					throw new RuntimeException ("No hay vacunas disponibles");
+					} 
 				}
 			}
-		
+			throw new RuntimeException ("No hay vacunas disponibles");
 		}
-	}
 
 }
+
+
