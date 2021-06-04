@@ -30,7 +30,7 @@ public class Almacen {
 	}
 	
 	public static void ingresarVacuna(String nombre, int Cantidad, Fecha fechaIngreso) {
-		stock.put(nombre, Cantidad);
+		stock.put(nombre, Cantidad); // el stock aqui no esta actualizando correctamente, hay que extraer el valor y luego agregarle la cantidad
 		if (nombre.equals("Sputnik"))
 			for(int i = 0; i<Cantidad; i++) 
 				listaVacunas.add(new Vacuna3Grados(nombre,true,fechaIngreso));
@@ -95,20 +95,21 @@ public class Almacen {
 	}
 		
 	public static int vacunasDisponibles() { 
+		
 		int contador = 0;
 		for (Vacuna v: listaVacunas) { 
+			// aca hay que modificar el stock para que coincidan
 			contador += 1;
 		}
 		return contador;
 	}
 
-
 	public static int vacunasDisponibles(String nombreVacuna) {
-		if (stock.containsKey(nombreVacuna)) 
+		if (stock.containsKey(nombreVacuna)) {
 			return stock.get(nombreVacuna);
+		}
 		return 0;
 	}
-
 
 	public static String asignarVacuna(int prioridad) {
 		if (prioridad == 1) {
