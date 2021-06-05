@@ -42,6 +42,14 @@ public class Administracion {
 	//FIXME
 	private static void asignarColaPrioridad() {
 		//recorrer personas y compararlas para ingresarlas en orden segun prioridad de 1 a 4 :)
+		
+		for(int i = 0; i<4; i++) {
+			for(Persona p : listaEspera) {
+				if(p.getPrioridad() == i+1) {
+					colaPrioridad.add(p);
+				}
+			}
+		}
 	}
 	
 	public void generarTurnos(Fecha fechaInicial) {
@@ -98,8 +106,11 @@ public class Administracion {
 
 	public List<Integer> listaDeEspera() {
 		List <Integer> lista = new LinkedList <Integer>();
-		for (Persona p : colaPrioridad) {
-			lista.add(p.getDni());
+		for (Persona p : listaEspera) {
+			if(p.getTurno() == null && !p.getVacunado()) {
+				Integer aux = new Integer(p.getDni());
+				lista.add(aux);
+			}
 		}
 		return lista;
 	}
@@ -113,11 +124,9 @@ public class Administracion {
 		ArrayList<Persona> asignados = new ArrayList<Persona>();
 		asignarColaPrioridad();
 		int cont = capacidad;
-		HashSet<Persona> aux;
 				
 		for(int i = 0; i < 4; i++) {
-			aux = colaPrioridad.get(i);
-			for(Persona p: aux) {
+			for(Persona p: colaPrioridad) {
 				if(cont >= 0) {
 				asignados.add(p);
 				}

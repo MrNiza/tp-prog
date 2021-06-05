@@ -62,6 +62,10 @@ public class Persona implements Comparable<Persona> {
 		return this.prioridad;
 	}
 	
+	public boolean getVacunado() {
+		return this.vacunado;
+	}
+	
 	@Override
 	public int compareTo(Persona otra) {
 		if (this.prioridad == otra.prioridad) {

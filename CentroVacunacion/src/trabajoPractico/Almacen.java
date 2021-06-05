@@ -30,23 +30,66 @@ public class Almacen {
 	}
 	
 	public static void ingresarVacuna(String nombre, int Cantidad, Fecha fechaIngreso) {
-		stock.put(nombre, Cantidad); // el stock aqui no esta actualizando correctamente, hay que extraer el valor y luego agregarle la cantidad
-		if (nombre.equals("Sputnik"))
-			for(int i = 0; i<Cantidad; i++) 
-				listaVacunas.add(new Vacuna3Grados(nombre,true,fechaIngreso));
-		if (nombre.equals("Pfizer"))
-			for(int i = 0; i<Cantidad; i++)
-				listaVacunas.add(new VacunaMenos18(nombre,true,fechaIngreso));
-		if (nombre.equals("Sinopharm"))
-			for(int i = 0; i<Cantidad; i++)
-				listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
-		if (nombre.equals("Moderna")) 
-			for(int i = 0; i<Cantidad; i++)
-				listaVacunas.add(new VacunaMenos18(nombre,false,fechaIngreso));	
-		if (nombre.equals("AstraZeneca"))
-			for(int i = 0; i<Cantidad; i++)
-				listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+		if(stock.containsKey(nombre) && stock.size() >0) {
+			Integer canttidadActualizada = new Integer((stock.get(nombre)+(Integer)Cantidad));
+			stock.put(nombre, canttidadActualizada);
+			
+			if (nombre.equals("Sputnik")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new Vacuna3Grados(nombre,true,fechaIngreso));
+				}
+			}
+			if (nombre.equals("Pfizer")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new VacunaMenos18(nombre,true,fechaIngreso));
+				}
+			}
+			if (nombre.equals("Sinopharm")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+				}
+			}
+			if (nombre.equals("Moderna")) { 
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new VacunaMenos18(nombre,false,fechaIngreso));
+				}
+			}
+			if (nombre.equals("AstraZeneca")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+				}
+			}
 		}
+		else {
+			stock.put(nombre, Cantidad);
+			
+			if (nombre.equals("Sputnik")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new Vacuna3Grados(nombre,true,fechaIngreso));
+				}
+			}
+			if (nombre.equals("Pfizer")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new VacunaMenos18(nombre,true,fechaIngreso));
+				}
+			}
+			if (nombre.equals("Sinopharm")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+				}
+			}
+			if (nombre.equals("Moderna")) { 
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new VacunaMenos18(nombre,false,fechaIngreso));
+				}
+			}
+			if (nombre.equals("AstraZeneca")) {
+				for(int i = 0; i<Cantidad; i++) {
+					listaVacunas.add(new Vacuna3Grados(nombre,false,fechaIngreso));
+				}
+			}
+		}
+	}
 	
 	public static void quitarVencidas() { 
 		Iterator it = listaVacunas.iterator();
@@ -54,6 +97,7 @@ public class Almacen {
 		while(it.hasNext()){
 			Vacuna v = (Vacuna) it.next();
 			if(v.vencida()) {
+				stock.put(v.getNombre(), stock.get(v.getNombre())-1);
 				vencidas.replace(v.getNombre(), vencidas.get(v.getNombre())+1);
 				it.remove();
 			}
