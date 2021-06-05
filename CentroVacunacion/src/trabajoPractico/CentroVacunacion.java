@@ -1,6 +1,7 @@
 
 package trabajoPractico;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,9 +97,20 @@ public class CentroVacunacion {
 	public void generarTurnos(Fecha fechaInicial) { 
 		if (fecha.hoy().posterior(fechaInicial))
 			throw new RuntimeException ("No se pueden generar turnos para una fecha pasada");
-		administracion.asignarPersonas(this.capacidad);
 		
+		// el centro debe recibir la info de los seleccionados y las vacunas, luego se generan turnos y se asignan a las personas, recordar que se esta usando aliasing, tener cuidado
+		// IMPORTANTE si no alcanzan las vacunas debe dejar de asiganrles, en caso de no haber suficientes personas no pasa nada ya que esta comtemplado en asignarPersonas
+		ArrayList<Persona> seleccionados = administracion.asignarPersonas(this.capacidad);
+		// una vez recibidas las personas se debe buscar las vacunas para los de prioridad 1, osea saber la cantidad de personas en esa prioridad y luego buscar esa cantidad de vacunas
+		//luego de las vacunas de prioridad 1 hay que buscar las que quedan, es decir de la capacidad total restar las de prioridad 1
+		// recordar que si las vacunas de prio 1 no alcanzan entonces llenar con otras vacunas
 		HashSet<Vacuna> vacunasListas = almacen.asignarVacunasEspeciales(this.capacidad);
+		
+		for(Persona p: seleccionados) {
+			if(p.getPrioridad() == 1) {
+				for(Vacuna v: vacunasListas)
+			}
+		}
 	}
 	
 	/**
